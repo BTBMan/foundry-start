@@ -1,0 +1,7 @@
+{
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "eslint.enable": false,
+  "solidity.formatter": "forge",
+  "prettier.enable": false
+}
