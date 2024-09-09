@@ -78,6 +78,10 @@ contract FundMe {
         require(callSuccess, "Call failed!");
     }
 
+    function getVersion() public view returns (uint256) {
+        return s_priceFeed.version();
+    }
+
     function getFunders(uint256 index) public view returns (address) {
         return s_funders[index];
     }
