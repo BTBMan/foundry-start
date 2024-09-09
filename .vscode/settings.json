@@ -5,7 +5,7 @@
   "solidity.packageDefaultDependenciesContractsDirectory": "src",
   "solidity.packageDefaultDependenciesDirectory": "lib",
   "solidity.formatter": "forge",
-  "solidity.compileUsingRemoteVersion": "v0.8.13",
+  "solidity.compileUsingRemoteVersion": "v0.8.27",
   "eslint.enable": false,
   "prettier.enable": false
 }

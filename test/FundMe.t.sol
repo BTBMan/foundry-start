@@ -1,24 +1,17 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.27;
 
 import {Test, console} from "forge-std/Test.sol";
-// import {Counter} from "../src/Counter.sol";
+import {FundMe} from "../src/FundMe.sol";
 
 contract FundMeTest is Test {
-    // Counter public counter;
+    FundMe public fundMe;
 
     function setUp() public {
-        // counter = new Counter();
-        // counter.setNumber(0);
+        fundMe = new FundMe();
     }
 
-    function test_Increment() public {
-        // counter.increment();
-        // assertEq(counter.number(), 1);
-    }
-
-    function testFuzz_SetNumber(uint256 x) public {
-        // counter.setNumber(x);
-        // assertEq(counter.number(), x);
+    function testMinimumDollarIsFive() public view {
+        assertEq(fundMe.MINIMUM_USD(), 5e18);
     }
 }
