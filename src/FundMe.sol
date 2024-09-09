@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "./PriceConverter.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {PriceConverter} from "./PriceConverter.sol";
 
 error FundMe__NotOwner();
 
@@ -16,9 +17,9 @@ contract FundMe {
 
     address[] private s_funders;
     mapping(address funder => uint256 amountFunded) private s_addressToAmountFunded;
-    address private s_priceFeedAddress;
-    address public immutable i_owner; // use immutable to save gas fee
-    uint256 public constant MINIMUM_USD = 5e18; // use constant to save gas fee
+    AggregatorV3Interface private s_priceFeed;
+    address public immutable i_owner;
+    uint256 public constant MINIMUM_USD = 5e18;
 
     modifier onlyOwner() {
         if (msg.sender != i_owner) {
@@ -27,9 +28,9 @@ contract FundMe {
         _;
     }
 
-    constructor(address _priceFeedAddress) {
+    constructor(address priceFeed) {
         i_owner = msg.sender;
-        s_priceFeedAddress = _priceFeedAddress;
+        s_priceFeed = AggregatorV3Interface(priceFeed);
     }
 
     receive() external payable {
@@ -45,7 +46,7 @@ contract FundMe {
      * @dev This implements price feeds as our library
      */
     function fund() public payable {
-        require(msg.value.getConversionRate(s_priceFeedAddress) >= MINIMUM_USD, "Didn't send enough!");
+        require(msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD, "Didn't send enough!");
 
         s_funders.push(msg.sender);
         s_addressToAmountFunded[msg.sender] += msg.value;
@@ -84,7 +85,7 @@ contract FundMe {
         return s_addressToAmountFunded[funder];
     }
 
-    function getPriceFeedAddress() public view returns (address) {
-        return s_priceFeedAddress;
+    function getPriceFeed() public view returns (AggregatorV3Interface) {
+        return s_priceFeed;
     }
 }
