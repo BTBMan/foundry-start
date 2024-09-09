@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.13;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {PriceConverter} from "./PriceConverter.sol";
@@ -28,9 +28,10 @@ contract FundMe {
         _;
     }
 
-    constructor(address priceFeed) {
+    // constructor(address priceFeed) {
+    constructor() {
         i_owner = msg.sender;
-        s_priceFeed = AggregatorV3Interface(priceFeed);
+        // s_priceFeed = AggregatorV3Interface(priceFeed);
     }
 
     receive() external payable {
