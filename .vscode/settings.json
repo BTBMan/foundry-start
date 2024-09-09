@@ -1,7 +1,8 @@
 {
   "[solidity]": {
-    "editor.defaultFormatter": "NomicFoundation.hardhat-solidity"
+    "editor.defaultFormatter": "JuanBlanco.solidity",
   },
+  "solidity.monoRepoSupport": false,
   "solidity.formatter": "forge",
   "eslint.enable": false,
   "prettier.enable": false
