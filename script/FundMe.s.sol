@@ -5,15 +5,15 @@ import {Script, console} from "forge-std/Script.sol";
 import {FundMe} from "../src/FundMe.sol";
 
 contract FundMeScript is Script {
-    FundMe public fundMe;
-
     function setUp() public {}
 
-    function run() public {
+    function run() public returns (FundMe) {
         vm.startBroadcast();
 
-        fundMe = new FundMe();
+        FundMe fundMe = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
 
         vm.stopBroadcast();
+
+        return fundMe;
     }
 }

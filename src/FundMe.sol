@@ -28,10 +28,9 @@ contract FundMe {
         _;
     }
 
-    // constructor(address priceFeed) {
-    constructor() {
+    constructor(address priceFeed) {
         i_owner = msg.sender;
-        // s_priceFeed = AggregatorV3Interface(priceFeed);
+        s_priceFeed = AggregatorV3Interface(priceFeed);
     }
 
     receive() external payable {
