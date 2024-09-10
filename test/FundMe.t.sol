@@ -8,8 +8,13 @@ import {FundMeScript} from "../script/FundMe.s.sol";
 contract FundMeTest is Test {
     FundMe public fundMe;
 
+    address user = makeAddr("user");
+    uint256 constant SEND_VALUE = 0.1 ether;
+    uint256 constant STARTING_BALANCE = 100 ether;
+
     function setUp() public {
         fundMe = new FundMeScript().run();
+        vm.deal(user, STARTING_BALANCE);
     }
 
     function testMinimumDollarIsFive() public view {
@@ -22,5 +27,20 @@ contract FundMeTest is Test {
 
     function testAggregatorVersion() public view {
         assertGe(fundMe.getVersion(), 0);
+    }
+
+    function testFundFailsWithoutEnoughtETH() public {
+        vm.expectRevert();
+
+        fundMe.fund();
+    }
+
+    function testFundUpdatesFundedDataStructure() public {
+        vm.prank(user);
+
+        fundMe.fund{value: SEND_VALUE}();
+
+        assertEq(fundMe.getFunders(0), user);
+        assertEq(fundMe.getAddressToAmountFunded(user), SEND_VALUE);
     }
 }
