@@ -11,6 +11,7 @@ contract FundMeTest is Test {
     address user = makeAddr("user");
     uint256 constant SEND_VALUE = 0.1 ether;
     uint256 constant STARTING_BALANCE = 100 ether;
+    uint256 constant GAS_PRICE = 1;
 
     modifier funded() {
         vm.prank(user);
@@ -36,7 +37,7 @@ contract FundMeTest is Test {
         assertGe(fundMe.getVersion(), 0);
     }
 
-    function testFundFailsWithoutEnoughtETH() public {
+    function testFundFailsWithoutEnoughETH() public {
         vm.expectRevert();
 
         fundMe.fund();
@@ -60,9 +61,16 @@ contract FundMeTest is Test {
         uint256 startingOwnerBalance = fundMe.i_owner().balance;
         uint256 startingFundMeBalance = address(fundMe).balance;
 
+        vm.txGasPrice(GAS_PRICE); // set gasprice by using cheatcode
+        uint256 gasStart = gasleft();
+
         vm.prank(fundMe.i_owner());
 
         fundMe.withdraw();
+
+        uint256 gasEnd = gasleft();
+        uint256 gasUsed = (gasStart - gasEnd) * tx.gasprice;
+        console.log(gasUsed);
 
         uint256 endingOwnerBalance = fundMe.i_owner().balance;
         uint256 endingFundMeBalance = address(fundMe).balance;
